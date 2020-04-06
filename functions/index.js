@@ -131,7 +131,25 @@ app.post('/api/create', (req, res) => {
             }
         })();
     });
-//Read
 //Delete
+    app.delete('/api/delete/:id', (req, res) => {
+        (async() => {
+            try
+            {
+                const recordToDelete = db.collection('quotes').doc(req.params.id);
+                if (recordToDelete) {
+                    await recordToDelete.delete();
+                    return res.status(200).send('Quote succesfully deleted')
+                } else {
+                    return res.status(404).send('Record not found');
+                }
+            }
+            catch(error){
+                console.log(error);
+                return res.status(400).send(error);
+            }
+
+        })();
+    })
 
 exports.app = functions.https.onRequest(app);
